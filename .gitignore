@@ -41,5 +41,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Chat logging (case-insensitive match for Chat-Log/ and chat-log/)
+[Cc]hat-[Ll]og/*.log
+
 # Misc
 .turbo/

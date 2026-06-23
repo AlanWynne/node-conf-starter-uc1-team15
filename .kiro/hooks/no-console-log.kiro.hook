@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "No console.log in Source Files",
+  "description": "Flags any console.log statements found in source files on save. Debug logging must be removed before committing.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/**/*.ts",
+      "client/src/**/*.tsx",
+      "client/src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "powershell -Command \"$matches = Select-String -Path 'server/src/**/*.ts','client/src/**/*.ts','client/src/**/*.tsx' -Pattern 'console\\.(log|warn|debug|info)' -Recurse; if ($matches) { Write-Host 'CONVENTION VIOLATION: Remove console.log/warn/debug/info before committing:'; $matches | ForEach-Object { Write-Host $_.ToString() }; exit 1 } else { Write-Host 'OK: No console.log violations found.' }\"",
+    "timeout": 15
+  }
+}

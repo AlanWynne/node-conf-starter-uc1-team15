@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "TypeScript Strict Type-Check on Save",
+  "description": "Runs tsc --noEmit in both the server and client workspaces whenever a TypeScript file is saved, enforcing strict type safety across the monorepo.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npx tsc --noEmit -p server/tsconfig.json & npx tsc --noEmit -p client/tsconfig.json",
+    "timeout": 60
+  }
+}

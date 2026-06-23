@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Enable Chat Logging",
+  "description": "Sets chat logging to enabled by writing {\"enabled\": true} to the config file and confirms to the user.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "powershell -Command \"New-Item -ItemType Directory -Force -Path 'chat-log' | Out-Null; Set-Content -Path 'chat-log/config.json' -Value '{\"enabled\": true}'; Write-Host 'Chat logging enabled.'\"",
+    "timeout": 10
+  }
+}

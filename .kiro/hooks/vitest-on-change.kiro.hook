@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "Vitest on File Create or Modify",
+  "description": "Runs the Vitest test suite (both server and client) when any source or test file is created or modified, ensuring tests stay green as code evolves.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/**/*.ts",
+      "server/tests/**/*.ts",
+      "client/src/**/*.{ts,tsx}",
+      "client/tests/**/*.{ts,tsx}"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npm test --workspaces --if-present",
+    "timeout": 180
+  }
+}

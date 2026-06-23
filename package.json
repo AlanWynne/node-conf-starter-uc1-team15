@@ -15,6 +15,7 @@
     "build": "npm run build --workspace=server && npm run build --workspace=client",
     "start": "npm run start --workspace=server",
     "test": "npm run test --workspace=server && npm run test --workspace=client",
+    "test:report": "npm run test:report --workspace=server ; npm run test:report --workspace=client ; node scripts/generate-tcr.mjs",
     "test:e2e": "npm run test:e2e --workspace=client",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

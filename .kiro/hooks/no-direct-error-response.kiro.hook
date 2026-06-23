@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "No Direct Error Response in Route Handlers",
+  "description": "Checks that route handlers never call res.status().json() or res.json() directly for error responses. All errors must be thrown with status and code properties and passed to next(err).",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/routes/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "powershell -Command \"$matches = Select-String -Path 'server/src/routes/**/*.ts' -Pattern 'res\\.status\\([45]' -Recurse; if ($matches) { Write-Host 'CONVENTION VIOLATION: Direct error responses found in route handlers. Use throw + next(err) instead:'; $matches | ForEach-Object { Write-Host $_.ToString() }; exit 1 } else { Write-Host 'OK: No direct error response violations found.' }\"",
+    "timeout": 15
+  }
+}

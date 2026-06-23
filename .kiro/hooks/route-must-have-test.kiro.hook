@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "New Route Must Have a Test File",
+  "description": "When a new route file is created in server/src/routes/, checks whether a corresponding test file exists in server/tests/ and reminds the developer to create one if missing.",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "server/src/routes/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A new route file was just created. Check whether a corresponding test file exists in server/tests/ for this route.\n\nThe test file should mirror the source path — e.g., server/src/routes/disputes.ts → server/tests/disputes.test.ts (or server/tests/routes/disputes.test.ts).\n\nIf no test file exists yet, remind the developer that every route must have at least one test covering the happy path and key error cases (404, 422, 400). Offer to create a test file scaffold if they want."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "No Business Logic in Route Handlers",
+  "description": "Reviews route handler files to ensure they contain no inline business logic. Validation must be in validation.ts, business rules in domain modules, and DB access via db.ts only.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/routes/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A route handler file was just saved. Check for business logic violations:\n\n**Rule**: Route handlers must be thin orchestrators — they should only: validate input (by calling validateX functions) → call business logic (from dedicated modules) → persist via Prisma → respond.\n\nFlag any of these in route handlers:\n- Inline validation logic (if/else checks on field values, regex checks) that isn't delegated to a validation function\n- Business rule conditions (e.g., amount thresholds, age calculations, rule evaluation) that belong in a domain module\n- Direct `new PrismaClient()` instantiation (must use the singleton from db.ts)\n- Complex data transformation that belongs in a dedicated helper\n\nIf the file is clean, confirm briefly."
+  }
+}

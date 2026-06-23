@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "No Magic Numbers in Business Logic",
+  "description": "When triage engine or validation files are saved, checks for inline numeric literals that should be named constants (e.g., amount thresholds, day counts, limits).",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/triage-engine.ts",
+      "server/src/validation.ts",
+      "server/src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A business logic file was just saved. Check for magic numbers — inline numeric literals that should be named constants.\n\n**Rule**: Threshold values used in conditions must be named constants in a constants.ts file, not inline literals.\n\nExamples to flag:\n- `amount > 500` → should be `amount > FRAUD_ESCALATION_THRESHOLD_AMOUNT`\n- `disputeAge > 30` → should be `disputeAge > MISSING_PAYMENT_ESCALATION_DAYS`\n- `999999999.99` in validation → should be `MAX_DISPUTE_AMOUNT`\n- `2000` (description length) → should be `MAX_DESCRIPTION_LENGTH`\n\nExempt: array indices, loop counters (i + 1), HTTP status codes (404, 422, etc.), and version numbers.\n\nIf magic numbers are found, show the constant name to use and where to define it. If the file is clean, say so briefly."
+  }
+}

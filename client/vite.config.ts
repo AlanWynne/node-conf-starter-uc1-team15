@@ -15,5 +15,13 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    minify: 'esbuild',
+    target: 'es2020',
+    rollupOptions: {
+      output: {
+        // Split vendor chunk for better browser cache efficiency
+        manualChunks: { vendor: ['react', 'react-dom'] },
+      },
+    },
   },
 });

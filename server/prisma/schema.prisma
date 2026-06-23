@@ -10,11 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Example model - customize as needed
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Dispute {
+  id                String               @id @default(cuid())
+  disputeRef        String               @unique
+  customerName      String
+  transactionRef    String
+  paymentType       String
+  issueCategory     String
+  transactionStatus String
+  amount            Float
+  transactionDate   DateTime
+  description       String?
+  recommendedAction String
+  disputeStatus     String               @default("open")
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  statusHistory     DisputeStatusHistory[]
+
+  // Index for paginated list sorted by createdAt DESC
+  @@index([createdAt(sort: Desc)])
+}
+
+model DisputeStatusHistory {
+  id        String   @id @default(cuid())
+  disputeId String
+  status    String
+  reason    String
+  changedAt DateTime @default(now())
+  dispute   Dispute  @relation(fields: [disputeId], references: [id])
+
+  // Index for FK lookups when including statusHistory on a dispute
+  @@index([disputeId])
 }

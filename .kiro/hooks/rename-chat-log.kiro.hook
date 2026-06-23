@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Rename Chat Log",
+  "description": "When manually triggered, archives the session log by renaming it with a date-prefixed descriptive filename based on the chat content.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Archive the current chat session log by renaming it to a descriptive filename. Follow these steps:\n\n1. Read the file at `Chat-Log/chat-session.log`.\n2. If the file does not exist or is empty (contains no log entries), take no action and leave the filesystem unchanged.\n3. Extract the date from the last entry's timestamp in the log to use as the `YYYY-MM-DD` prefix for the new filename.\n4. Generate a short summary of the log content as a lowercase, hyphen-separated phrase of no more than 50 characters that reflects the primary topic discussed.\n5. Compose the new filename as `YYYY-MM-DD_short-summary.log` (e.g., `2025-01-15_refactor-auth-module.log`).\n6. Validate that the entire filename contains only characters from the set [a-z0-9\\-_.]. If any invalid characters are present, replace or remove them to comply.\n7. Check if a file with the generated name already exists in `Chat-Log/`. If it does, append a numeric suffix `_2`, `_3`, etc. before the `.log` extension until a unique filename is found (e.g., `2025-01-15_refactor-auth-module_2.log`).\n8. Rename (move) `Chat-Log/chat-session.log` to the new filename within the `Chat-Log/` directory.\n9. Ensure the original `Chat-Log/chat-session.log` is removed and no duplicate remains.\n\nUse relative paths only. Do not use absolute paths."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Dispute Status Change Must Record History",
+  "description": "When route or database files are saved, checks that any code path updating disputeStatus also creates a DisputeStatusHistory record, maintaining the required audit trail.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/routes/**/*.ts",
+      "server/src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A server source file was just saved. Check for dispute status update operations that are missing a corresponding history record.\n\n**Rule**: Any code that updates `disputeStatus` on a Dispute record MUST also create a `DisputeStatusHistory` entry in the same operation. Updating status without recording history breaks the audit trail.\n\nLook for:\n- `dispute.update(...)` or `db.dispute.update(...)` calls that set `disputeStatus` — verify they include a `statusHistory: { create: { ... } }` nested write\n- Any direct status field assignments that don't have an accompanying history write\n\nIf a status update is found without history, flag it and show the correct pattern using Prisma's nested `statusHistory: { create: { status, reason, changedAt } }`. If the file is clean, confirm briefly."
+  }
+}

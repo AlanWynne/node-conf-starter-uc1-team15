@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Auto-Update Documentation on Code Change",
+  "description": "When a source file is edited, checks whether the change affects public APIs, component interfaces, or business rules documented in README, design.md, or steering files, and updates them to stay in sync.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/**/*.ts",
+      "client/src/**/*.tsx",
+      "client/src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A source file was just saved. Review the change and determine if any documentation needs updating:\n1. Check if any exported function signatures, component props, or API contracts changed.\n2. If changes affect public interfaces, update the relevant section in README.md or the spec design.md.\n3. If business rules in the triage engine changed, update the rules table in design.md.\n4. If new environment variables or configuration was added, update .env.example and README.\nOnly update documentation if something actually changed — do not make unnecessary edits."
+  }
+}

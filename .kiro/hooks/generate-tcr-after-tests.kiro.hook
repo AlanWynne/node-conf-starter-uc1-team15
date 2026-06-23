@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Generate Test Completion Report",
+  "description": "After any test file is saved, runs both server and client test suites with JSON output and regenerates test-completion-report.md with full pass/fail status, failure reasons, and per-test durations.",
+  "version": "1.0.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/tests/**/*.ts",
+      "client/tests/**/*.ts",
+      "client/tests/**/*.tsx"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npm run test:report --workspace=server & npm run test:report --workspace=client & node scripts/generate-tcr.mjs",
+    "timeout": 120
+  }
+}

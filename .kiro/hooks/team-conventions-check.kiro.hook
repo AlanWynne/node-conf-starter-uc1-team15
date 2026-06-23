@@ -1,0 +1,18 @@
+{
+  "enabled": true,
+  "name": "Team Conventions Check",
+  "description": "When a file is saved, reviews it against the project's coding conventions: ES module imports with .js extensions on the server, data-testid attributes on interactive elements, Tailwind-only styling, named router exports, and no direct PrismaClient instantiation outside db.ts.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/**/*.ts",
+      "client/src/**/*.tsx",
+      "client/src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A file was just saved. Verify it follows the team conventions defined in the steering files:\n- **Server files**: imports use `.js` extension; routers are named exports (`export const xyzRouter`); errors are thrown with `status` and `code` properties; PrismaClient is only used via the singleton in `db.ts`.\n- **Client files**: components use Tailwind utility classes only (no inline styles, no CSS modules); interactive and key display elements have `data-testid` attributes; `useState`/`useEffect` hooks only (no class components).\n- **General**: `const` by default; explicit return types on exported functions; no `any` without a justifying comment.\nIf any convention is violated, point out the specific line and suggest the correct fix. If everything looks good, say so briefly."
+  }
+}

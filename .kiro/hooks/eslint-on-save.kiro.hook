@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "name": "ESLint on Save",
+  "description": "Runs ESLint on TypeScript and JavaScript files whenever they are saved, reporting any lint errors or warnings.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.mjs"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npx eslint \"client/src\" \"server/src\" --ext .ts,.tsx,.js,.mjs --max-warnings=0",
+    "timeout": 30
+  }
+}

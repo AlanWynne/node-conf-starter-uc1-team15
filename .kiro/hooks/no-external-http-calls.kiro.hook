@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "No External HTTP Calls Without Approval",
+  "description": "Flags any fetch() or HTTP client calls to external URLs (non-relative, non-localhost) in source files, enforcing the project constraint that no real external integrations are allowed.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "server/src/**/*.ts",
+      "client/src/**/*.tsx",
+      "client/src/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "powershell -Command \"$files = Get-ChildItem -Path 'server/src','client/src' -Recurse -Include '*.ts','*.tsx' -ErrorAction SilentlyContinue; $violations = $files | Select-String -Pattern 'fetch\\s*\\([''\\\"](https?://)(?!localhost|127\\.0\\.0\\.1)' -ErrorAction SilentlyContinue; if ($violations) { Write-Host 'CONVENTION VIOLATION: External HTTP call detected. All fetch() calls must target /api/* or localhost only:'; $violations | ForEach-Object { Write-Host $_.ToString() }; exit 1 } else { Write-Host 'OK: No external HTTP call violations found.' }\"",
+    "timeout": 15
+  }
+}

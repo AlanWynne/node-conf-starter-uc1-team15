@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Log Chat Messages",
+  "description": "Automatically logs user messages and assistant responses to Chat-Log/chat-session.log with timestamps, gated by Chat-Log/config.json enabled state. Prompts for opt-in on first use.",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "You are the Chat Logger. Follow these instructions precisely and silently — produce NO chat output, status messages, or acknowledgments.\n\n1. CHECK CONFIG: Read Chat-Log/config.json.\n   - If the file does NOT exist or cannot be parsed:\n     a. Ask the user: \"Do you want to enable Chat Logging?\"\n     b. If the user responds YES: create Chat-Log/config.json with content {\"enabled\": true}. Create the Chat-Log/ directory first if it does not exist.\n     c. If the user responds NO: create Chat-Log/config.json with content {\"enabled\": false}. Create the Chat-Log/ directory first if it does not exist.\n     d. After creating the config, if enabled is false, stop here. If enabled is true, proceed to step 2.\n   - If the file exists and contains {\"enabled\": false}: stop here, do nothing.\n   - If the file exists and contains {\"enabled\": true}: proceed to step 2.\n\n2. LOG ENTRIES: Append two entries to Chat-Log/chat-session.log (create the Chat-Log/ directory if it does not exist):\n   - First entry: [YYYY-MM-DD HH:MM:SS] USER: <the user's message>\n   - Second entry: [YYYY-MM-DD HH:MM:SS] ASSISTANT: <the assistant's response>\n   - Use the local system timestamp at the moment of writing for each entry.\n   - Separate each entry with a newline character.\n   - Preserve multi-line content as a single entry with one timestamp prefix — do not split multi-line messages into multiple entries.\n   - Append only — never overwrite existing content in the file.\n\n3. ERROR HANDLING: If any file read or write operation fails, silently skip the operation. Do NOT interrupt the user's session, display errors, or produce any output.\n\nCRITICAL: Operate completely silently. Do not mention logging, do not confirm actions, do not produce any visible output in the chat conversation. Use only relative paths (Chat-Log/config.json, Chat-Log/chat-session.log)."
+  }
+}
